@@ -7,7 +7,8 @@ on:
 
 env:
   PLATFORM: "android"
-  UNITY_EDITOR_PATH: "/Applications/Unity/Hub/Editor/6000.2.7f2"
+  # ⚠️ Don't forget to update this to your new Unity version! (See notes below)
+  UNITY_EDITOR_PATH: "/Applications/Unity/Hub/Editor/6000.3.5f2"
   BUILD_NAME: "MyGame"
 
 jobs:
@@ -19,8 +20,8 @@ jobs:
         with:
           lfs: true
 
-      # --- 1. PASO DE COMPILACIÓN (LICENCIA PRO) ---
-      # Esto compilará tu juego de Android y generará la carpeta Library/Bee/
+      # --- 1. BUILD STEP (PRO LICENSE) ---
+      # This will build your Android game and generate the Library/Bee/ folder
       - name: Build Android Project
         uses: game-ci/unity-builder@v4
         env:
@@ -34,12 +35,13 @@ jobs:
           # Tells Unity to use the profile with the Debug Symbols enabled!
           # customParameters: -buildProfile "Assets/Settings/Build Profiles/Android_CI.asset"
 
-      # --- PASO PARA GUARDAR EL APK Y PODER DESCARGARLO ---
+      # --- STEP TO SAVE THE APK FOR DOWNLOAD ---
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: MyGame-APK
           path: ${{ github.workspace }}/**/*.apk
+          
       # --- 2. SYMBOL UPLOAD STEP ---
       - name: Upload debug symbols
         env:
@@ -56,6 +58,6 @@ jobs:
           sed -i '' "s|BUILD_OUTPUT_PATH=\"<your-build-output-path>\"|BUILD_OUTPUT_PATH=\"${BUILD_OUTPUT_PATH}\"|" ./usymtool.sh
           sed -i '' "s|BUILD_NAME=\"<your-build-name>\"|BUILD_NAME=\"${BUILD_NAME}\"|" ./usymtool.sh
           
-          export IL2CPP_FILE_ROOT_OVERRIDE="."
+          export IL2CPP_FILE_ROOT_OVERRIDE="${{ github.workspace }}/Library/Bee/artifacts/Android/il2cppOutput/cpp"
           chmod +x ./usymtool.sh
           ./usymtool.sh

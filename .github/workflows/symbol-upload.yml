@@ -43,6 +43,13 @@ jobs:
           path: ${{ github.workspace }}/**/*.apk
           
       # --- 2. SYMBOL UPLOAD STEP ---
+      - name: Check symbols directory
+        run: |
+          echo "=== Symbols directory ==="
+          ls -la "${{ github.workspace }}/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/symbols/" || echo "Directory not found or empty"
+          echo "=== Il2CppBackup ==="
+          ls -la "${{ github.workspace }}/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/" || echo "Not found"
+
       - name: Upload debug symbols
         env:
           UNITY_PROJECT_ID: ${{ secrets.UNITY_PROJECT_ID }}
@@ -61,3 +68,10 @@ jobs:
           export IL2CPP_FILE_ROOT_OVERRIDE="${{ github.workspace }}/Library/Bee/artifacts/Android/il2cppOutput/cpp"
           chmod +x ./usymtool.sh
           ./usymtool.sh
+
+      - name: Upload usymtool log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: symbol-upload-log
+          path: ~/Library/Logs/Unity/symbol_upload.log

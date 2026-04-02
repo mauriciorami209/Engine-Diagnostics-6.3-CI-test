@@ -1,0 +1,63 @@
+name: Build and Upload Symbols
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  PLATFORM: "android"
+  # ⚠️ Don't forget to update this to your new Unity version! (See notes below)
+  UNITY_EDITOR_PATH: "/Applications/Unity/Hub/Editor/6000.3.5f2"
+  BUILD_NAME: "MyGame"
+
+jobs:
+  upload-symbols:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      # --- 1. BUILD STEP (PRO LICENSE) ---
+      # This will build your Android game and generate the Library/Bee/ folder
+      - name: Build Android Project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          targetPlatform: Android
+          buildsPath: ${{ github.workspace }}/Build
+          androidVersionCode: ${{ github.run_number }}
+          # Tells Unity to use the profile with the Debug Symbols enabled!
+          # customParameters: -buildProfile "Assets/Settings/Build Profiles/Android_CI.asset"
+
+      # --- STEP TO SAVE THE APK FOR DOWNLOAD ---
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MyGame-APK
+          path: ${{ github.workspace }}/**/*.apk
+          
+      # --- 2. SYMBOL UPLOAD STEP ---
+      - name: Upload debug symbols
+        env:
+          UNITY_PROJECT_ID: ${{ secrets.UNITY_PROJECT_ID }}
+          UNITY_SA_AUTH: ${{ secrets.UNITY_SA_AUTH_HEADER }}
+          UNITY_PROJECT_PATH: ${{ github.workspace }}
+          BUILD_OUTPUT_PATH: ${{ github.workspace }}/Build
+        run: |
+          sed -i '' "s|PLATFORM=\"macos\"|PLATFORM=\"${PLATFORM}\"|" ./usymtool.sh
+          sed -i '' "s|UNITY_PROJECT_ID=\"<your-unity-project-id>\"|UNITY_PROJECT_ID=\"${UNITY_PROJECT_ID}\"|" ./usymtool.sh
+          sed -i '' "s|UNITY_SERVICE_ACCOUNT_AUTH_HEADER=\"<your-service-account-auth-header>\"|UNITY_SERVICE_ACCOUNT_AUTH_HEADER=\"${UNITY_SA_AUTH}\"|" ./usymtool.sh
+          sed -i '' "s|UNITY_EDITOR_PATH=\"/Applications/Unity/Hub/Editor/6000.3.10f1\"|UNITY_EDITOR_PATH=\"${UNITY_EDITOR_PATH}\"|" ./usymtool.sh
+          sed -i '' "s|UNITY_PROJECT_PATH=\"<your-unity-project-path>\"|UNITY_PROJECT_PATH=\"${UNITY_PROJECT_PATH}\"|" ./usymtool.sh
+          sed -i '' "s|BUILD_OUTPUT_PATH=\"<your-build-output-path>\"|BUILD_OUTPUT_PATH=\"${BUILD_OUTPUT_PATH}\"|" ./usymtool.sh
+          sed -i '' "s|BUILD_NAME=\"<your-build-name>\"|BUILD_NAME=\"${BUILD_NAME}\"|" ./usymtool.sh
+          
+          export IL2CPP_FILE_ROOT_OVERRIDE="${{ github.workspace }}/Library/Bee/artifacts/Android/il2cppOutput/cpp"
+          chmod +x ./usymtool.sh
+          ./usymtool.sh

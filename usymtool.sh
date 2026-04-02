@@ -55,7 +55,7 @@ IOS_BUILD_PRODUCTS_PATH="<your-xcode-build-products-path>"
 # █████████████████████████████████████████████████████████████████████████████
 
 # Override any derived path (leave empty to use platform defaults)
-USYMTOOL_PATH_OVERRIDE="${UNITY_EDITOR_PATH}/Unity.app/Contents/Tools/macosx/usymtool"
+USYMTOOL_PATH_OVERRIDE=""
 SYMBOL_PATH_OVERRIDE=""
 IL2CPP_OUTPUT_PATH_OVERRIDE=""
 IL2CPP_FILE_ROOT_OVERRIDE=""

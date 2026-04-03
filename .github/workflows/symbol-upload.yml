@@ -45,10 +45,14 @@ jobs:
       # --- 2. SYMBOL UPLOAD STEP ---
       - name: Check symbols directory
         run: |
-          echo "=== Symbols directory ==="
-          ls -la "${{ github.workspace }}/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/symbols/" || echo "Directory not found or empty"
-          echo "=== Il2CppBackup ==="
-          ls -la "${{ github.workspace }}/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/" || echo "Not found"
+          echo "=== Symbols/arm64-v8a contents ==="
+          ls -la "${{ github.workspace }}/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/symbols/arm64-v8a/" || echo "Not found"
+          echo "=== All .so files in symbols ==="
+          find "${{ github.workspace }}/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/symbols/" -name "*.so" | head -20 || echo "No .so files found"
+          echo "=== All .zip files in Build output ==="
+          find "${{ github.workspace }}/Build/" -name "*.zip" | head -10 || echo "No .zip files found"
+          echo "=== Il2CppBackup/Symbols ==="
+          ls -la "${{ github.workspace }}/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Symbols/" || echo "Not found"
 
       - name: Upload debug symbols
         env:

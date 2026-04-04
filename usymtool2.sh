@@ -13,7 +13,7 @@ set -euo pipefail
 # █████████████████████████████████████████████████████████████████████████████
 
 # Platform to upload symbols for (ios, macos, android)
-PLATFORM="macos"
+PLATFORM="android"
 
 # Set to true if your build uses the IL2CPP scripting backend.
 # Enables C# line numbers in exception reports.
@@ -21,16 +21,19 @@ USE_IL2CPP=true
 
 # Unity project ID (from Unity Dashboard)
 # Example: "d7219bd9-ce9e-4a0e-90d5-caf5ce46e658"
-UNITY_PROJECT_ID="<your-unity-project-id>"
+UNITY_PROJECT_ID="3adba8dd-3aa6-4166-8b08-1ff49dcbce51"
 
 # Service account auth header (from Unity Dashboard > Service Accounts)
 # Example: "Basic dXNlcm5hbWU6cGFzc3dvcmQ="
-UNITY_SERVICE_ACCOUNT_AUTH_HEADER="<your-service-account-auth-header>"
+UNITY_SERVICE_ACCOUNT_AUTH_HEADER="Basic NDM1Mjg3M2QtOTIwNy00YzQ2LWJlOTgtMTUwMzVhNDc2YjE0OkpzT0pZc3pPN3d3akcwYmppZ1h1bHhfcml1VnNZWjJf"
+
 # Path to the Unity Editor installation
-UNITY_EDITOR_PATH="/Applications/Unity/Hub/Editor/6000.3.10f1"
+UNITY_EDITOR_PATH="/Applications/Unity/Hub/Editor/6000.3.5f2"
+
 # Path to the Unity project
 # Example: "/Users/yourname/UnityProjects/MyGame"
-UNITY_PROJECT_PATH="<your-unity-project-path>"
+UNITY_PROJECT_PATH="/Users/mauricioramirez/UNITY PROJECTS/Engine Diagnostics 6.3 CI test"
+
 # Path to the build output directory
 # For iOS, this is the Xcode project export path.
 # For macOS/Windows, this is the folder containing the built app.
@@ -55,7 +58,7 @@ IOS_BUILD_PRODUCTS_PATH="<your-xcode-build-products-path>"
 # █████████████████████████████████████████████████████████████████████████████
 
 # Override any derived path (leave empty to use platform defaults)
-USYMTOOL_PATH_OVERRIDE=""
+USYMTOOL_PATH_OVERRIDE="/Applications/Unity/Hub/Editor/6000.3.5f2/Unity.app/Contents/Helpers/usymtool"
 SYMBOL_PATH_OVERRIDE="${UNITY_PROJECT_PATH}/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/symbols/arm64-v8a"
 IL2CPP_OUTPUT_PATH_OVERRIDE=""
 IL2CPP_FILE_ROOT_OVERRIDE=""
@@ -155,7 +158,7 @@ echo "Auth token acquired successfully."
 export USYM_UPLOAD_AUTH_TOKEN
 export USYM_UPLOAD_URL_SOURCE
 
-CMD=("${USYMTOOL_PATH}" -symbolPath "${SYMBOL_PATH}")
+CMD=("${USYMTOOL_PATH}" -symbolPath "${SYMBOL_PATH}" -forceUpload)
 
 [[ -n "${LOG_PATH}" ]] && CMD+=(-log "${LOG_PATH}")
 [[ -n "${FILTER}" ]] && CMD+=(-filter "${FILTER}")

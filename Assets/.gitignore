@@ -80,3 +80,12 @@ crashlytics-build.properties
 *.apk
 *.aab
 *_BackUpThisFolder_ButDontShipItWithYourGame/
+# --- Unity 6 / Bee Build System ---
+
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/*_BurstDebugInformation_DoNotShip/
+/*_BackUpThisFolder_ButDontShipItWithYourGame/

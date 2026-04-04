@@ -159,9 +159,6 @@ CMD=("${USYMTOOL_PATH}" -symbolPath "${SYMBOL_PATH}" -forceUpload)
 
 [[ -n "${LOG_PATH}" ]] && CMD+=(-log "${LOG_PATH}")
 [[ -n "${FILTER}" ]] && CMD+=(-filter "${FILTER}")
-
-[[ -n "${LOG_PATH}" ]] && CMD+=(-log "${LOG_PATH}")
-[[ -n "${FILTER}" ]] && CMD+=(-filter "${FILTER}")
 if [[ "${USE_IL2CPP}" == true ]]; then
   CMD+=(-il2cppOutputPath "${IL2CPP_OUTPUT_PATH}")
   [[ -n "${IL2CPP_FILE_ROOT}" ]] && CMD+=(-il2cppFileRoot "${IL2CPP_FILE_ROOT}")

@@ -32,7 +32,7 @@ UNITY_EDITOR_PATH="/Applications/Unity/Hub/Editor/6000.3.5f2"
 
 # Path to the Unity project
 # Example: "/Users/yourname/UnityProjects/MyGame"
-UNITY_PROJECT_PATH="/Users/mauricioramirez/UNITY PROJECTS/Engine Diagnostics 6.3 CI test"
+UNITY_PROJECT_PATH="/Users/mauricioramirez/UNITY PROJECTS/Engine-Diagnostics-6.3-CI-test"
 
 # Path to the build output directory
 # For iOS, this is the Xcode project export path.

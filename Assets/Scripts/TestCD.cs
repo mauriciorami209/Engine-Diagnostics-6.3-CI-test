@@ -21,6 +21,7 @@ public class TestCD : MonoBehaviour
         ooRErrorButton.onClick.AddListener(OORError);
         forceCrashAccessViolationButton.onClick.AddListener(ForceCrashAccessViolation);
         nullReferenceErrorButton.onClick.AddListener(NullReferenceTest);
+        Debug.Log("Prueba CI");
     }
 
     public void QuitApp()

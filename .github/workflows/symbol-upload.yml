@@ -69,7 +69,6 @@ jobs:
           sed -i '' "s|BUILD_OUTPUT_PATH=\"<your-build-output-path>\"|BUILD_OUTPUT_PATH=\"${BUILD_OUTPUT_PATH}\"|" ./usymtool.sh
           sed -i '' "s|BUILD_NAME=\"<your-build-name>\"|BUILD_NAME=\"${BUILD_NAME}\"|" ./usymtool.sh
           
-          export IL2CPP_FILE_ROOT_OVERRIDE="${{ github.workspace }}/Library/Bee/artifacts/Android/il2cppOutput/cpp"
           chmod +x ./usymtool.sh
           ./usymtool.sh
 

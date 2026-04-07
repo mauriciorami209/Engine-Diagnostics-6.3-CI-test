@@ -155,7 +155,7 @@ echo "Auth token acquired successfully."
 export USYM_UPLOAD_AUTH_TOKEN
 export USYM_UPLOAD_URL_SOURCE
 
-CMD=("${USYMTOOL_PATH}" -symbolPath "${SYMBOL_PATH}" -forceUpload)
+CMD=("${USYMTOOL_PATH}" -symbolPath "${SYMBOL_PATH}")
 
 [[ -n "${LOG_PATH}" ]] && CMD+=(-log "${LOG_PATH}")
 [[ -n "${FILTER}" ]] && CMD+=(-filter "${FILTER}")

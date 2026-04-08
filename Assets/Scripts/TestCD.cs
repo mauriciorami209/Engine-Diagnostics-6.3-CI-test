@@ -22,6 +22,7 @@ public class TestCD : MonoBehaviour
         forceCrashAccessViolationButton.onClick.AddListener(ForceCrashAccessViolation);
         nullReferenceErrorButton.onClick.AddListener(NullReferenceTest);
         Debug.Log("Prueba CI");
+        Debug.Log("Forzando nuevo UUID para test de usymtool");
     }
 
     public void QuitApp()
